@@ -5,8 +5,13 @@ output:
     keep_md: true
 ---
 
-
 ## Loading and preprocessing the data
+
+```r
+Sys.setlocale("LC_TIME", "C")
+```
+
+[1] "C"
 
 ```r
 dataFileNAme="activity.zip"
@@ -213,8 +218,8 @@ meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerD
 
 
 ```r
-weekDays<-c("Montag","Dienstag","Mittwoch","Donnerstag","Freitag")
-weekEnd <-c("Samstag","Sonntag")
+weekDays<-c("Monday","Tuesday","Wednesday","Thursday","Friday")
+#weekEnd <-c("Saturday","Sunday")
  
 reprodataFilled <-transform(reprodataFilled,daytype = factor( x=ifelse(weekdays(as.Date(reprodataFilled$date)) %in% weekDays,"weekday","weekend"),levels = c("weekday","weekend") ))
 summary(reprodataFilled)

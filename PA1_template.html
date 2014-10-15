@@ -203,6 +203,11 @@ hr {
 <body>
 <h2>Loading and preprocessing the data</h2>
 
+<pre><code class="r">Sys.setlocale(&quot;LC_TIME&quot;, &quot;C&quot;)
+</code></pre>
+
+<p>[1] &ldquo;C&rdquo;</p>
+
 <pre><code class="r">dataFileNAme=&quot;activity.zip&quot;
 unzip(dataFileNAme)
 reprodata &lt;- read.csv(&quot;activity.csv&quot;,header = TRUE)
@@ -394,8 +399,8 @@ Mean is :</li>
 <li>Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.</li>
 </ul>
 
-<pre><code class="r">weekDays&lt;-c(&quot;Montag&quot;,&quot;Dienstag&quot;,&quot;Mittwoch&quot;,&quot;Donnerstag&quot;,&quot;Freitag&quot;)
-weekEnd &lt;-c(&quot;Samstag&quot;,&quot;Sonntag&quot;)
+<pre><code class="r">weekDays&lt;-c(&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;)
+#weekEnd &lt;-c(&quot;Saturday&quot;,&quot;Sunday&quot;)
 
 reprodataFilled &lt;-transform(reprodataFilled,daytype = factor( x=ifelse(weekdays(as.Date(reprodataFilled$date)) %in% weekDays,&quot;weekday&quot;,&quot;weekend&quot;),levels = c(&quot;weekday&quot;,&quot;weekend&quot;) ))
 summary(reprodataFilled)

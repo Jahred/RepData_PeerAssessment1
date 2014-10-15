@@ -7,6 +7,7 @@ output:
 
 ## Loading and preprocessing the data
 ```{r,results='asis',echo=TRUE,fig.height=3,fig.width=5}
+Sys.setlocale("LC_TIME", "C")
 dataFileNAme="activity.zip"
 unzip(dataFileNAme)
 reprodata <- read.csv("activity.csv",header = TRUE)
@@ -161,8 +162,8 @@ meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerD
 
 
 ```{r}
-weekDays<-c("Montag","Dienstag","Mittwoch","Donnerstag","Freitag")
-weekEnd <-c("Samstag","Sonntag")
+weekDays<-c("Monday","Tuesday","Wednesday","Thursday","Friday")
+#weekEnd <-c("Saturday","Sunday")
  
 reprodataFilled <-transform(reprodataFilled,daytype = factor( x=ifelse(weekdays(as.Date(reprodataFilled$date)) %in% weekDays,"weekday","weekend"),levels = c("weekday","weekend") ))
 summary(reprodataFilled)
