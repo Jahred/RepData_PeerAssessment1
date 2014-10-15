@@ -216,7 +216,6 @@ meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerD
  - Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
 
-
 ```r
 weekDays<-c("Monday","Tuesday","Wednesday","Thursday","Friday")
 #weekEnd <-c("Saturday","Sunday")
