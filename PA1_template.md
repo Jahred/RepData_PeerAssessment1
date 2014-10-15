@@ -5,8 +5,10 @@ output:
     keep_md: true
 ---
 
+
 ## Loading and preprocessing the data
-```{r,results='asis',echo=TRUE,fig.height=3,fig.width=5}
+
+```r
 dataFileNAme="activity.zip"
 unzip(dataFileNAme)
 reprodata <- read.csv("activity.csv",header = TRUE)
@@ -24,8 +26,6 @@ reprodataMean= dcast(reprodataReshaped, interval~ steps,mean)
 
 require(ggplot2)
 require(plyr)
-
-
 ```
 
 
@@ -36,28 +36,36 @@ require(plyr)
 
 1. Make a histogram of the total number of steps taken each day
 
-```{r}
+
+```r
 hist(totalStepPerDay,col="light green",main="Histogram Total number of steps taken per day", xlab="steps")
 abline(v=meanStepPerDay,col="red")
 abline(v=medianStepPerDay,col="blue")
 legend("topright", cex=0.5,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
- 
-
 ```
+
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 
 2. Calculate and report the mean and median total number of steps taken per day
 
 
   Median is:
-```{r,echo=TRUE,results='asis'}
+
+```r
  median(totalStepPerDay,na.rm=TRUE)
 ```
 
-Mean is: 
-```{r}
-mean(totalStepPerDay,na.rm=TRUE)
+[1] 10395
 
+Mean is: 
+
+```r
+mean(totalStepPerDay,na.rm=TRUE)
+```
+
+```
+## [1] 9354
 ```
 
 
@@ -65,20 +73,27 @@ mean(totalStepPerDay,na.rm=TRUE)
 ## What is the average daily activity pattern?
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
-```{r}
+
+```r
 ggplot(reprodataMean, aes(interval,steps)) + geom_line(color="blue")+ labs(title="steps average daily activity")+ labs(x="5-minute interval")+ labs(y="averaged across all days")  
 ```
+
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
     Interval with maximal number of steps: 
 
 
-```{r}
+
+```r
 max <- reprodataMean[reprodataMean$steps ==max(reprodataMean$steps),]
 
 max$interval[1]
- 
+```
+
+```
+## [1] 835
 ```
 
 
@@ -86,9 +101,14 @@ max$interval[1]
 
 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-```{r}
+
+```r
 numberOfNa <- length(which((is.na(reprodata))))
 numberOfNa
+```
+
+```
+## [1] 2304
 ```
 
 2.  Strategy for filling in all of the missing values in the dataset:
@@ -97,7 +117,8 @@ numberOfNa
 
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r}
+
+```r
 reprodataFilled <- reprodata
 numRow <- nrow(reprodataFilled)
 j =1
@@ -116,8 +137,23 @@ for(i in 1:numRow){
 head(reprodataFilled,n=10)
 ```
 
+```
+##      steps       date interval
+## 1  1.71698 2012-10-01        0
+## 2  0.33962 2012-10-01        5
+## 3  0.13208 2012-10-01       10
+## 4  0.15094 2012-10-01       15
+## 5  0.07547 2012-10-01       20
+## 6  2.09434 2012-10-01       25
+## 7  0.52830 2012-10-01       30
+## 8  0.86792 2012-10-01       35
+## 9  0.00000 2012-10-01       40
+## 10 1.47170 2012-10-01       45
+```
+
 4.     Make a histogram of the total number of steps taken each day
-```{r}
+
+```r
 reprodataFilledReshaped <- melt(reprodataFilled[,c("interval","steps")],id="interval", measure.vars=c("steps"),variable.name="steps", na.rm=FALSE)
 reprodataFilledSum= dcast(reprodataFilledReshaped, interval~ steps,sum)
 meanStepPerDayFilled <-mean(reprodataFilledSum$steps)
@@ -126,20 +162,30 @@ hist(reprodataFilledSum$steps,col="light blue",main="Histogram Total number of s
 abline(v=meanStepPerDayFilled,col="red")
 abline(v=medianStepPerDayFilled,col="blue")
 legend("topright", cex=0.4,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
-
-
 ```
+
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 
 - Calculate and report the mean and median total number of steps taken per day.
 Mean is :
-```{r}
+
+```r
 meanStepPerDayFilled
 ```
 
+```
+## [1] 2280
+```
+
 Median is: 
-```{r}
+
+```r
 medianStepPerDayFilled
+```
+
+```
+## [1] 2081
 ```
 
 
@@ -147,8 +193,13 @@ medianStepPerDayFilled
 - Do these values differ from the estimates from the first part of the assignment? 
 
 The values differ from those estimated in the first part
-```{r }
+
+```r
 meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerDay 
+```
+
+```
+## [1] TRUE
 ```
 
 - What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -160,40 +211,69 @@ meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerD
  - Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
 
-```{r}
+
+```r
 weekDays<-c("Montag","Dienstag","Mittwoch","Donnerstag","Freitag")
 weekEnd <-c("Samstag","Sonntag")
  
 reprodataFilled <-transform(reprodataFilled,daytype = factor( x=ifelse(weekdays(as.Date(reprodataFilled$date)) %in% weekDays,"weekday","weekend"),levels = c("weekday","weekend") ))
 summary(reprodataFilled)
+```
+
+```
+##      steps               date          interval       daytype     
+##  Min.   :  0.0   2012-10-01:  288   Min.   :   0   weekday:12960  
+##  1st Qu.:  0.0   2012-10-02:  288   1st Qu.: 589   weekend: 4608  
+##  Median :  0.0   2012-10-03:  288   Median :1178                  
+##  Mean   : 37.4   2012-10-04:  288   Mean   :1178                  
+##  3rd Qu.: 27.0   2012-10-05:  288   3rd Qu.:1766                  
+##  Max.   :806.0   2012-10-06:  288   Max.   :2355                  
+##                  (Other)   :15840
+```
+
+```r
 head(reprodataFilled)
+```
+
+```
+##     steps       date interval daytype
+## 1 1.71698 2012-10-01        0 weekday
+## 2 0.33962 2012-10-01        5 weekday
+## 3 0.13208 2012-10-01       10 weekday
+## 4 0.15094 2012-10-01       15 weekday
+## 5 0.07547 2012-10-01       20 weekday
+## 6 2.09434 2012-10-01       25 weekday
 ```
 
 
   
 - Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
 We first melt and recast the data in order to bring it into a form that suitable for plotting:
-```{r}
+
+```r
 copyFilled <- reprodataFilled
 copymelt <-  melt(copyFilled ,id=c("interval","date"), measure.vars=c("steps"),variable.name="steps", na.rm=TRUE)
 
 copymeltMutate<-mutate(copymelt,daytype = factor( x=ifelse(weekdays(as.Date(copymelt$date)) %in% weekDays,"weekday","weekend"),levels = c("weekday","weekend") ))
 
 copymeltMean= dcast(copymeltMutate, interval+daytype ~ steps,mean)
-
-
-
 ```
 
 and then make the panel plot:
-```{r}
+
+```r
 #  qplot(interval,value,data=reprodataFilledReshaped,facets= daytype ~ .,geom =c("line","smooth"),color=daytype)
 # require(lattice)
 # xyplot(reprodataFilledReshaped$value ~ reprodataFilledReshaped$interval | reprodataFilledReshaped$daytype, layout=c(2,1))
 
 
 ggplot(copymeltMean, aes(interval,steps)) + geom_line(aes(color = daytype))+geom_smooth(method="auto")+facet_grid(. ~ daytype)+ labs(title="steps average daily activity")+ labs(x="5-minute interval")+ labs(y="averaged across all days")  
-
+```
 
 ```
+## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
+## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
+```
+
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png) 
 
