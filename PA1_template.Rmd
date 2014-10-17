@@ -52,13 +52,13 @@ legend("topright", cex=0.5,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_tex
 
   Median is:
 ```{r,echo=TRUE,results='asis'}
- median(totalStepPerDay,na.rm=TRUE)
+medianStepPerDay
 ```
+
 
 Mean is: 
 ```{r}
-mean(totalStepPerDay,na.rm=TRUE)
-
+meanStepPerDay
 ```
 
 
@@ -119,13 +119,19 @@ head(reprodataFilled,n=10)
 
 4.     Make a histogram of the total number of steps taken each day
 ```{r}
-reprodataFilledReshaped <- melt(reprodataFilled[,c("interval","steps")],id="interval", measure.vars=c("steps"),variable.name="steps", na.rm=FALSE)
-reprodataFilledSum= dcast(reprodataFilledReshaped, interval~ steps,sum)
-meanStepPerDayFilled <-mean(reprodataFilledSum$steps)
-medianStepPerDayFilled <- median(reprodataFilledSum$steps)
-hist(reprodataFilledSum$steps,col="light blue",main="Histogram Total number of steps per day approximated NAs", xlab="steps")
-abline(v=meanStepPerDayFilled,col="red")
-abline(v=medianStepPerDayFilled,col="blue")
+totalStepPerDayFilled <- sapply(split(reprodataFilled,reprodataFilled$date),function(x) sum(x$steps,na.rm=FALSE))
+
+medianStepPerDayFil <- median(totalStepPerDayFilled,na.rm=TRUE)
+meanStepPerDayFil <- mean(totalStepPerDayFilled,na.rm=TRUE)
+
+vmedian_text=paste("median: ",medianStepPerDayFil)
+vmean_text=paste("mean: ",meanStepPerDayFil)
+
+
+
+hist(totalStepPerDayFilled,col="light blue",main="Histogram Total number of steps taken per day. NAs replaced by mean of interval.", xlab="steps")
+abline(v=meanStepPerDayFil,col="red")
+abline(v=medianStepPerDayFil,col="blue")
 legend("topright", cex=0.4,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
 
 
@@ -135,12 +141,12 @@ legend("topright", cex=0.4,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_tex
 - Calculate and report the mean and median total number of steps taken per day.
 Mean is :
 ```{r}
-meanStepPerDayFilled
+meanStepPerDayFil
 ```
 
 Median is: 
 ```{r}
-medianStepPerDayFilled
+medianStepPerDayFil
 ```
 
 
@@ -149,7 +155,7 @@ medianStepPerDayFilled
 
 The values differ from those estimated in the first part
 ```{r }
-meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerDay 
+meanStepPerDayFil < meanStepPerDay && medianStepPerDayFil< medianStepPerDay 
 ```
 
 - What is the impact of imputing missing data on the estimates of the total daily number of steps?

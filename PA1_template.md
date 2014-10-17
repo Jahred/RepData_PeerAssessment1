@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 ## Loading and preprocessing the data
 
@@ -30,7 +25,18 @@ reprodataMean= dcast(reprodataReshaped, interval~ steps,mean)
  
 
 require(ggplot2)
+```
+
+```
+## Loading required package: ggplot2
+```
+
+```r
 require(plyr)
+```
+
+```
+## Loading required package: plyr
 ```
 
 
@@ -49,7 +55,7 @@ abline(v=medianStepPerDay,col="blue")
 legend("topright", cex=0.5,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
 
 
 2. Calculate and report the mean and median total number of steps taken per day
@@ -58,15 +64,16 @@ legend("topright", cex=0.5,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_tex
   Median is:
 
 ```r
- median(totalStepPerDay,na.rm=TRUE)
+medianStepPerDay
 ```
 
 [1] 10395
 
+
 Mean is: 
 
 ```r
-mean(totalStepPerDay,na.rm=TRUE)
+meanStepPerDay
 ```
 
 ```
@@ -83,7 +90,7 @@ mean(totalStepPerDay,na.rm=TRUE)
 ggplot(reprodataMean, aes(interval,steps)) + geom_line(color="blue")+ labs(title="steps average daily activity")+ labs(x="5-minute interval")+ labs(y="averaged across all days")  
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -159,38 +166,44 @@ head(reprodataFilled,n=10)
 4.     Make a histogram of the total number of steps taken each day
 
 ```r
-reprodataFilledReshaped <- melt(reprodataFilled[,c("interval","steps")],id="interval", measure.vars=c("steps"),variable.name="steps", na.rm=FALSE)
-reprodataFilledSum= dcast(reprodataFilledReshaped, interval~ steps,sum)
-meanStepPerDayFilled <-mean(reprodataFilledSum$steps)
-medianStepPerDayFilled <- median(reprodataFilledSum$steps)
-hist(reprodataFilledSum$steps,col="light blue",main="Histogram Total number of steps per day approximated NAs", xlab="steps")
-abline(v=meanStepPerDayFilled,col="red")
-abline(v=medianStepPerDayFilled,col="blue")
+totalStepPerDayFilled <- sapply(split(reprodataFilled,reprodataFilled$date),function(x) sum(x$steps,na.rm=FALSE))
+
+medianStepPerDayFil <- median(totalStepPerDayFilled,na.rm=TRUE)
+meanStepPerDayFil <- mean(totalStepPerDayFilled,na.rm=TRUE)
+
+vmedian_text=paste("median: ",medianStepPerDayFil)
+vmean_text=paste("mean: ",meanStepPerDayFil)
+
+
+
+hist(totalStepPerDayFilled,col="light blue",main="Histogram Total number of steps taken per day. NAs replaced by mean of interval.", xlab="steps")
+abline(v=meanStepPerDayFil,col="red")
+abline(v=medianStepPerDayFil,col="blue")
 legend("topright", cex=0.4,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
+![plot of chunk unnamed-chunk-9](./PA1_template_files/figure-html/unnamed-chunk-9.png) 
 
 
 - Calculate and report the mean and median total number of steps taken per day.
 Mean is :
 
 ```r
-meanStepPerDayFilled
+meanStepPerDayFil
 ```
 
 ```
-## [1] 2280
+## [1] 10766
 ```
 
 Median is: 
 
 ```r
-medianStepPerDayFilled
+medianStepPerDayFil
 ```
 
 ```
-## [1] 2081
+## [1] 10766
 ```
 
 
@@ -200,11 +213,11 @@ medianStepPerDayFilled
 The values differ from those estimated in the first part
 
 ```r
-meanStepPerDayFilled < meanStepPerDay && medianStepPerDayFilled < medianStepPerDay 
+meanStepPerDayFil < meanStepPerDay && medianStepPerDayFil< medianStepPerDay 
 ```
 
 ```
-## [1] TRUE
+## [1] FALSE
 ```
 
 - What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -279,5 +292,5 @@ ggplot(copymeltMean, aes(interval,steps)) + geom_line(aes(color = daytype))+geom
 ## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15.png) 
+![plot of chunk unnamed-chunk-15](./PA1_template_files/figure-html/unnamed-chunk-15.png) 
 
