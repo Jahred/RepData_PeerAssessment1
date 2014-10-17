@@ -1,4 +1,9 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
 ## Loading and preprocessing the data
 
@@ -25,18 +30,7 @@ reprodataMean= dcast(reprodataReshaped, interval~ steps,mean)
  
 
 require(ggplot2)
-```
-
-```
-## Loading required package: ggplot2
-```
-
-```r
 require(plyr)
-```
-
-```
-## Loading required package: plyr
 ```
 
 
@@ -55,7 +49,7 @@ abline(v=medianStepPerDay,col="blue")
 legend("topright", cex=0.5,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
 ```
 
-![plot of chunk unnamed-chunk-2](./PA1_template_files/figure-html/unnamed-chunk-2.png) 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
 
 2. Calculate and report the mean and median total number of steps taken per day
@@ -90,7 +84,7 @@ meanStepPerDay
 ggplot(reprodataMean, aes(interval,steps)) + geom_line(color="blue")+ labs(title="steps average daily activity")+ labs(x="5-minute interval")+ labs(y="averaged across all days")  
 ```
 
-![plot of chunk unnamed-chunk-5](./PA1_template_files/figure-html/unnamed-chunk-5.png) 
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -182,7 +176,7 @@ abline(v=medianStepPerDayFil,col="blue")
 legend("topright", cex=0.4,col=c("red","blue"), lty=c(1,1), legend=c(vmedian_text,vmean_text))
 ```
 
-![plot of chunk unnamed-chunk-9](./PA1_template_files/figure-html/unnamed-chunk-9.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 
 - Calculate and report the mean and median total number of steps taken per day.
@@ -210,14 +204,27 @@ medianStepPerDayFil
 
 - Do these values differ from the estimates from the first part of the assignment? 
 
-The values differ from those estimated in the first part
+The values differ from those estimated in the first part:
+
+Mean after approximation greater than mean before Approximation?
 
 ```r
-meanStepPerDayFil < meanStepPerDay && medianStepPerDayFil< medianStepPerDay 
+meanStepPerDayFil > meanStepPerDay 
 ```
 
 ```
-## [1] FALSE
+## [1] TRUE
+```
+
+Median after approximation greater than median before Approximation?
+
+
+```r
+medianStepPerDayFil> medianStepPerDay 
+```
+
+```
+## [1] TRUE
 ```
 
 - What is the impact of imputing missing data on the estimates of the total daily number of steps?
@@ -292,5 +299,5 @@ ggplot(copymeltMean, aes(interval,steps)) + geom_line(aes(color = daytype))+geom
 ## geom_smooth: method="auto" and size of largest group is <1000, so using loess. Use 'method = x' to change the smoothing method.
 ```
 
-![plot of chunk unnamed-chunk-15](./PA1_template_files/figure-html/unnamed-chunk-15.png) 
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
 

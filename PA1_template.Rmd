@@ -153,9 +153,17 @@ medianStepPerDayFil
 
 - Do these values differ from the estimates from the first part of the assignment? 
 
-The values differ from those estimated in the first part
+The values differ from those estimated in the first part:
+
+Mean after approximation greater than mean before Approximation?
 ```{r }
-meanStepPerDayFil < meanStepPerDay && medianStepPerDayFil< medianStepPerDay 
+meanStepPerDayFil > meanStepPerDay 
+```
+
+Median after approximation greater than median before Approximation?
+
+```{r}
+medianStepPerDayFil> medianStepPerDay 
 ```
 
 - What is the impact of imputing missing data on the estimates of the total daily number of steps?
